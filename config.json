@@ -1,0 +1,5 @@
+{
+    "browser": "Chrome",
+    "type": "local",
+    "implicit_wait": 10
+}
