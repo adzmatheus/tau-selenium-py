@@ -3,6 +3,7 @@
 - Clone the repo
 - run: pipenv install
 - run: pipenv run python -m pytest -n <'threads'>
+- run: pipenv run python -m pytest tests/step_defs<'specific test'>
 
 If using Windows: Install WSL
 

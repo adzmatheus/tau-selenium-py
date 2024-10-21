@@ -4,6 +4,8 @@ Este modulo contem o POM da pagina de login do Account
 
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.ui import WebDriverWait
 
 class AccountLoginPage:
 
@@ -13,7 +15,8 @@ class AccountLoginPage:
     EMAIL_INPUT = (By.XPATH, "(//input[@class='mdc-text-field__input'])[1]")
     PASSWORD_INPUT = (By.XPATH, "(//input[@class='mdc-text-field__input'])[2]")
     CONTINUAR_CONECTADO_INPUT = (By.XPATH, "//input[@id='remember-login-checkbox']")
-    ENTRAR_BUTTON = (By.XPATH, "(//span[@class='mdc-button__ripple'])[2]")
+    ENTRAR_BUTTON = (By.XPATH, "//div[@class='mdc-form-field mdc-form__item'][contains(.,'Entrar')]")
+    ERROR_MESSAGE = (By.XPATH, "//span[@class='textSnackbar'][contains(.,'E-mail ou senha inválidos.')]")
 
     # Initializer
     def __init__(self, browser):
@@ -23,10 +26,28 @@ class AccountLoginPage:
     def load(self):
         self.browser.get(self.URL)
 
-    def login(self, email, password):
+    def fill_email(self, email):
         email_input = self.browser.find_element(*self.EMAIL_INPUT)
         email_input.send_keys(email)
 
+    def fill_password(self, password):
         password_input = self.browser.find_element(*self.PASSWORD_INPUT)
-        password_input.send_keys(password + Keys.RETURN)
+        password_input.send_keys(password)
 
+    def click_entrar(self, timeout=10):
+        entrar = WebDriverWait(self.browser, timeout).until(
+            EC.element_to_be_clickable((By.XPATH, "//div[@class='mdc-form-field mdc-form__item'][contains(.,'Entrar')]"))
+        )
+        entrar.click()
+
+    def message(self, timeout=10):
+        snackbar = WebDriverWait(self.browser, timeout).until(
+            EC.visibility_of_element_located((By.XPATH, "//span[@class='textSnackbar'][contains(.,'E-mail ou senha inválidos.')]"))
+        )
+        return snackbar.text
+
+    def press_enter_in_element(self, element=None):
+        if element:
+            element.send_keys(Keys.ENTER)
+        else:
+            self.browser.find_element(By.TAG_NAME, "body").send_keys(Keys.ENTER)

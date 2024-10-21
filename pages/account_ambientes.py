@@ -6,11 +6,17 @@ from selenium.webdriver.common.by import By
 
 class AccountAmbientesPage:
 
+    URL = "https://login.rubeus.com.br/ambientes"
+
     AMBIENTES = (By.XPATH, "(//div[@class='listItem'])")
     SEARCH_INPUT = (By.XPATH, "//input[@class='search-class-input']")
+    TITLE_H1 = (By.XPATH, "//h1[@class='my-environments']")
 
     def __init__(self, browser):
         self.browser = browser
+
+    def load(self):
+        self.browser.get(self.URL)
 
     def meus_ambientes(self):
         ambientes = self.browser.find_elements(*self.AMBIENTES)
@@ -23,4 +29,5 @@ class AccountAmbientesPage:
         return value
 
     def title(self):
-        return self.browser.title
+        title_h1 = self.browser.find_element(*self.TITLE_H1)
+        return title_h1
