@@ -5,8 +5,12 @@ This module contains shared fixtures
 import json
 import pytest
 from pytest_bdd import given
+import pytest_html  
 import selenium.webdriver as webdriver
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
+
+import time
+from datetime import datetime
 
 
 # Hooks

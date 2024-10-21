@@ -10,6 +10,7 @@ pytest = "*"
 selenium = "*"
 pytest-xdist = "*"
 pytest-bdd = "*"
+pytest-html = "*"
 
 [requires]
 python_version = "3.10"
