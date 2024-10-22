@@ -6,8 +6,9 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
+from libraries.pom import SeleniumObject
 
-class AccountLoginPage:
+class AccountLoginPage(SeleniumObject):
 
     URL = "https://login.rubeus.com.br/"
 
@@ -27,22 +28,22 @@ class AccountLoginPage:
         self.browser.get(self.URL)
 
     def fill_email(self, email):
-        email_input = self.browser.find_element(*self.EMAIL_INPUT)
+        email_input = self.find_element(self.EMAIL_INPUT)
         email_input.send_keys(email)
 
     def fill_password(self, password):
-        password_input = self.browser.find_element(*self.PASSWORD_INPUT)
+        password_input = self.find_element(self.PASSWORD_INPUT)
         password_input.send_keys(password)
 
     def click_entrar(self, timeout=10):
         entrar = WebDriverWait(self.browser, timeout).until(
-            EC.element_to_be_clickable((By.XPATH, "//div[@class='mdc-form-field mdc-form__item'][contains(.,'Entrar')]"))
+            EC.element_to_be_clickable((self.ENTRAR_BUTTON))
         )
         entrar.click()
 
     def message(self, timeout=10):
         snackbar = WebDriverWait(self.browser, timeout).until(
-            EC.visibility_of_element_located((By.XPATH, "//span[@class='textSnackbar'][contains(.,'E-mail ou senha inválidos.')]"))
+            EC.visibility_of_element_located((self.ERROR_MESSAGE))
         )
         return snackbar.text
 
